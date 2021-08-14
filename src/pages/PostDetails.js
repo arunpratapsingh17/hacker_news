@@ -10,7 +10,7 @@ const PostDetails = () => {
     useEffect(async()=>{
         setLoading(true);
         console.log(loading);
-        var res = await axios.get(`http://hn.algolia.com/api/v1/items/${id}`)
+        var res = await axios.get(`https://hn.algolia.com/api/v1/items/${id}`)
         // console.log(res);
         setResult({title:res.data.title,points:res.data.points,comments:res.data.children});
         setLoading(false);

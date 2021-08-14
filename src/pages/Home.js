@@ -26,7 +26,7 @@ const Home = () => {
     // Handling the submitted data
     var handleSubmit=async ()=>{
         setLoading(true)
-        var res = await axios.get(`http://hn.algolia.com/api/v1/search?query=${value}`);
+        var res = await axios.get(`https://hn.algolia.com/api/v1/search?query=${value}`);
         // console.log(res.data.hits);
         setPosts(res.data.hits);
         setLoading(false)
