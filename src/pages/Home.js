@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MediaCard from '../components/MediaCard';
+import LoadingComp from "../components/LoadingComp";
 const useStyles = makeStyles((theme) => ({
     root: {
       '& .MuiTextField-root': {
@@ -16,6 +17,7 @@ const Home = () => {
     const classes = useStyles();
     const [value, setValue] = React.useState('');
     const [posts,setPosts] = useState([]);
+    const [loading,setLoading] = useState(false);
 
     //Handling the input data
     var handleChange=(event)=>{
@@ -23,9 +25,11 @@ const Home = () => {
       }
     // Handling the submitted data
     var handleSubmit=async ()=>{
+        setLoading(true)
         var res = await axios.get(`http://hn.algolia.com/api/v1/search?query=${value}`);
         // console.log(res.data.hits);
-        setPosts(res.data.hits)
+        setPosts(res.data.hits);
+        setLoading(false)
     }
     return (
         <div className="App">
@@ -45,13 +49,19 @@ const Home = () => {
             <button className="button" onClick={handleSubmit}>
                 Go
             </button>
-            <div className="list" >
+        {(loading)?(<LoadingComp />):( <div className="list" >
                 {posts.map((post)=>{
                     var props={title:post.title,author:post.author,id:post.objectID};
-                    // console.log(props);
+                    console.log(props);
+                    if(props.title ==null ){
+                        return false
+                    }
+                    else if(props.author==null){
+                        return false;
+                    }
                     return <MediaCard key={post.objectID} props={props} />
                 })}
-            </div>
+            </div>)}
         </div>
     )
 }
